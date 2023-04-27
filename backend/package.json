@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.9.5",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "mongoose": "^7.0.5",
+    "node-fetch": "2",
+    "react-redux": "^8.0.5"
+  }
+}
