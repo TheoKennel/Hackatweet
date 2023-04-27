@@ -1,0 +1,16 @@
+.tweet {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+.tweetHeader {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.tweetIcons {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
