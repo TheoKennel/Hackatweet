@@ -12,10 +12,6 @@ function MyApp({ Component, pageProps }) {
   const getPageContent = () => {
     if (router.pathname === '/login') {
       return <Login />;
-    } else if (router.pathname === '/signup') {
-      return <SignupPage />;
-    } else if (router.pathname === '/signin') {
-      return <SigninPage />;
     } else {
       return <HomePage />;
     }
