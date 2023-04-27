@@ -16,15 +16,18 @@ function Home() {
   const firstname = user.firstname;
 
   const tweetsData = useSelector((state) => state.tweets.value);
+  console.log(tweetsData);
 
   const [messageContent, setMessageContent] = useState('');
 
   const createTweet = () => {
-    dispatch(addTweet({ message: messageContent, date: Date(now) }))
+    if (messageContent.length < 280) {
+      dispatch(addTweet({ message: messageContent, date: Date.now }))
+    }
   }
 
   const tweets = tweetsData.map((data, i) => {
-    return <Task key={i} index={i} {...data} username={username} firstname={firstname} />;
+    return <Tweet key={i} index={i} {...data} username={username} firstname={firstname} />;
   });
 
   return (
@@ -48,13 +51,15 @@ function Home() {
       <div className={styles.tweetsSection}>
         <h2>Home</h2>
         <div className={styles.inputDiv} >
-          <input className={styles.inputContent} type="text" placeholder="What's up?" id="message" onChange={(e)=> setMessageContent(e.target.value)} value={messageContent}/>
+          <input className={styles.inputContent} type="text" placeholder="What's up?" maxLength="280" id="message" onChange={(e)=> setMessageContent(e.target.value)} value={messageContent}/>
         </div>
         <div className={styles.addTweet}>
-          <span className={styles.signs}>Signs Nbr</span>
+          <span className={styles.signs}>{messageContent.length}/280</span>
           <button className={styles.btn} id="tweet" onClick={()=> createTweet()}>Tweet</button>
         </div>
-
+        <div className={styles.tweetsContainer}>
+          {tweets}
+        </div>
       </div>
 
       <div className={styles.trendsSection}>

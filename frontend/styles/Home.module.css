@@ -21,7 +21,6 @@
   height: 25vh;
   width: 40%;
   color: white;
-  padding: 15px;
 }
 .inputDiv {
   text-align: center;
@@ -52,6 +51,9 @@
   font-weight: bold;
   margin: 5px;
   border: none !important;
+}
+.tweetsContainer {
+  overflow: scroll;
 }
 .trendsSection {
   display: flex;
