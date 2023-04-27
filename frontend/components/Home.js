@@ -4,11 +4,14 @@ import Tweet from './Tweet';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../reducers/user';
+import { useRouter } from 'next/router';
 import { addTweet } from '../reducers/tweets';
 import styles from '../styles/Home.module.css';
 
+
 function Home() {
 
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user.value);
@@ -30,6 +33,11 @@ function Home() {
     return <Tweet key={i} index={i} {...data} username={username} firstname={firstname} />;
   });
 
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push('/'); // Redirection vers la page de connexion après la déconnexion
+  };
+
   return (
     <div>
       <main className={styles.main}>
@@ -43,7 +51,7 @@ function Home() {
               User infos
             </div>
             <div className={styles.logout}>
-              logout button
+              <button onClick={handleLogout}>Logout</button>
             </div>
         </div>
       </div>

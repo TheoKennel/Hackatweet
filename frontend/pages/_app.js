@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Login from '../components/Login';
-import HomePage from './index';
+import LoginPage from './index'
 import SignupPage from './signup';
 import SigninPage from './signin';
 
@@ -16,6 +16,7 @@ import user from '../reducers/user';
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import storage from 'redux-persist/lib/storage';
+import Home from '../components/Home';
 
 const reducers = combineReducers({ tweets, user });
 const persistConfig = { key: 'hackatweet', storage};
@@ -31,10 +32,10 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
   const getPageContent = () => {
-    if (router.pathname === '/login') {
-      return <Login />;
+    if (router.pathname === '/tweet') {
+      return <Home />;
     } else {
-      return <HomePage />;
+      return <Login />;
     }
   };
 

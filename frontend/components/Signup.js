@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/SignUp.module.css";
 import Image from "next/image";
 import { login } from "../reducers/user";
+import { useRouter } from "next/router";
 
 function SignUp(props) {
 
   const dispatch = useDispatch();
 	const user = useSelector((state) => state.user.value);
+  const router = useRouter()
 
 
   const [signUpUsername, setSignUpUsername] = useState("");
@@ -15,6 +17,11 @@ function SignUp(props) {
   const [signUpFirstname, setSignUpFirstName] = useState("");
   const [error, setError] = useState(""); 
 
+  // useEffect(() => {
+  //   if (user.token) {
+  //      router.push("/tweet"); // Redirection vers la page Home si un token est présent
+  //  }
+  // }, []);
 
 
   const handleRegister = () => {
@@ -40,6 +47,7 @@ function SignUp(props) {
         setSignUpPassword('')
         setSignUpUsername('')
         setError('')
+        router.push("/tweet")
       } else {
         setError('Username is already taken')
       }

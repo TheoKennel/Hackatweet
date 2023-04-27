@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/SignIn.module.css";
 import Image from "next/image";
 import { login } from "../reducers/user";
+import { useRouter } from "next/router";
 
 
 function SignIn(props) {
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
-
+  const router = useRouter()
   const [signInUsername, setSignInUsername] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
   const [error, setError] = useState(""); 
@@ -35,6 +36,7 @@ function SignIn(props) {
             setSignInUsername('');
 			setSignInPassword('');
             setError('')
+            router.push("/tweet")
         } else {
             setError("Invalid email or username"); // Message d'erreur en cas de problème
         }
