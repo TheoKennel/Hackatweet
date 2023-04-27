@@ -32,4 +32,4 @@ function Tweet(props) {
   );
 }
 
-export default Task;
+export default Tweet;

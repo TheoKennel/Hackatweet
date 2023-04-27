@@ -1,24 +1,77 @@
-.main {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 4rem 0;
+.main_loginPage {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .imageLoginPage {
+    position: relative;
+    width: 60%;
+  }
+  
+  .imageLoginPage img {
+    width: 100%;
+    height: 100%;
+  
+  }
+  
+  .logoContainer {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .rightContent {
+    display: flex;
+    flex-direction: column;
+    padding-left: 35px;
+    width: 100%;
+    background-color: rgb(34, 34, 34);
+    color: #fff;
+
+  }
+
+  .rightLogoTop {
+    margin-top: 35px;
 }
 
-.title {
-  line-height: 1.15;
-  font-size: 4rem;
+  .rightTitre {
+    margin-top: 15px;
+    font-size: 45px;
 }
 
-.title a {
-  color: #0070f3;
-  text-decoration: none;
+  .rightTexte {
+    margin-top: -15px;
+    font-size: 35px;
 }
-
-.title a:hover,
-.title a:focus,
-.title a:active {
-  text-decoration: underline;
-}
+    .rightButton{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 220px;
+    }
+    .rightButtonUp{
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 150px;
+        font-family: 'Mont-Heavy', sans-serif;
+        font-size: 16px;
+        color: #fff;
+        background-color: dodgerblue;
+        cursor: pointer;
+    }
+    .rightButtonIn {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid grey;
+        border-radius: 150px;
+        font-family: 'Mont-Heavy', sans-serif;
+        font-size: 16px;
+        color: dodgerblue;
+        background-color: transparent;
+        cursor: pointer;
+    }
