@@ -4,7 +4,7 @@ import Tweet from './Tweet';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../reducers/user';
-import { addTweet } from '../reducers/tasks';
+import { addTweet } from '../reducers/tweets';
 import styles from '../styles/Home.module.css';
 
 function Home() {
@@ -48,7 +48,7 @@ function Home() {
       <div className={styles.tweetsSection}>
         <h2>Home</h2>
         <div className={styles.inputDiv} >
-          <input className={styles.inputContent} type="text" placeholder="What's up?" id="message" onChange={(e)=> setMessageContent(e.target.value) value={messageContent}}/>
+          <input className={styles.inputContent} type="text" placeholder="What's up?" id="message" onChange={(e)=> setMessageContent(e.target.value)} value={messageContent}/>
         </div>
         <div className={styles.addTweet}>
           <span className={styles.signs}>Signs Nbr</span>
