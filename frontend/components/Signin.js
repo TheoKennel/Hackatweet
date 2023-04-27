@@ -2,10 +2,44 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/SignIn.module.css";
 import Image from "next/image";
+import { login } from "../reducers/user";
+
 
 function SignIn(props) {
+
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.value);
+
   const [signInUsername, setSignInUsername] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
+  const [error, setError] = useState(""); 
+
+  const handleConnection = () => {
+    if (!signInUsername || !signInPassword) {
+        setError('Missing or empty field'); // Message d'erreur si des champs sont vides
+        return;
+      }
+
+    fetch('http://localhost:3000/signin', {
+    method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ 
+        username: signInUsername, 
+        password: signInPassword, 
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.result) {
+            dispatch(login({ username: signInUsername, token : data.token}))
+            setSignInUsername('');
+			setSignInPassword('');
+            setError('')
+        } else {
+            setError("Invalid email or username"); // Message d'erreur en cas de problème
+        }
+    })
+}
 
   return (
     <div className={styles.modalSignIn}>
@@ -20,6 +54,7 @@ function SignIn(props) {
           height={50}
         />
         <h1>Connect to Hackatweet</h1>
+        {error && <p className={styles.errorMessage}>{error}</p>}
         <div className={styles.modalInputButton}>
           <input
             className={styles.modalInput}
@@ -37,7 +72,7 @@ function SignIn(props) {
             onChange={(e) => setSignInPassword(e.target.value)}
             value={signInPassword}
           />
-          <button className={styles.modalButton}>Sign in</button>
+          <button className={styles.modalButton} onClick={() => handleConnection()}>Sign in</button>
         </div>
       </div>
     </div>

@@ -1,13 +1,27 @@
 import styles from "../styles/Login.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from 'next/router';
 import SignIn from "./Signin";
 import SignUp from "./Signup";
+import { login } from "../reducers/user";
+import Home from "./Home"
 
 function Login() {
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
+
+  const user = useSelector((state) => state.user.value);
+  const router = useRouter()
+
+
+    useEffect(() => {
+      if (user.token) {
+         router.push("/home"); // Redirection vers la page Home si un token est présent
+     }
+    }, [user]);
 
   const openSignUpModal = () => {
     setShowSignUpModal(true);
@@ -31,6 +45,7 @@ function Login() {
   return (
     <div className={styles.main_loginPage}>
       <div className={styles.imageLoginPage}>
+      {user.token ? <Home /> : <Login />}
         <img src="/background_gauche_loginTwitter.png" />
         <div className={styles.logoContainer}>
           <Image
