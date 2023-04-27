@@ -3,14 +3,30 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: flex-start;
+  height: 150px;
+  border-bottom: 1px solid grey;
 }
 .tweetHeader {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  padding-left: 10px;
+}
+.avatar {
+  border-radius: 100%;
+}
+.userDetails {
+  margin-left: 10px;
+}
+.message {
+  margin-left: 10px;
 }
 .tweetIcons {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  padding-left: 10px;
+}
+.like {
+  margin-right: 5px;
 }
