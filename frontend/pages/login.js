@@ -1,7 +1,7 @@
 import Login from '../components/Login';
 
-function IndexPage() {
+function LoginPage() {
   return <Login />;
 }
 
-export default IndexPage;
+export default LoginPage;

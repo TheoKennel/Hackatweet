@@ -1,19 +1,34 @@
 import '../styles/globals.css';
 import Head from 'next/head';
-import Login from '../components/Login'
-import Home from '../components/Home'
+import { useRouter } from 'next/router';
+import Login from '../components/Login';
+import HomePage from './index';
+import SignupPage from './signup';
+import SigninPage from './signin';
 
-function App({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+
+  const getPageContent = () => {
+    if (router.pathname === '/login') {
+      return <Login />;
+    } else if (router.pathname === '/signup') {
+      return <SignupPage />;
+    } else if (router.pathname === '/signin') {
+      return <SigninPage />;
+    } else {
+      return <HomePage />;
+    }
+  };
+
   return (
     <>
       <Head>
         <title>Hackatweet</title>
       </Head>
-      <Login/>
-      <Home/>
-      <Component {...pageProps} />
+      {getPageContent()}
     </>
   );
 }
 
-export default App;
+export default MyApp;
