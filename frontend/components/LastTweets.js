@@ -17,58 +17,63 @@ function LastTweets(props) {
     fetch('http://localhost:3000/tweet')
       .then(response => response.json())
       .then(data => {
-        setTweetsData(data.tweets);
+        setTweetsData(data);
       });
   }, []);
+
+  // Like tweet
+  const handleLikeTweet = (tweet) => {
+    const isLiked = likedTweetsData.some(likedTweet => likedTweet.date === tweet.date);
+    if (isLiked) {
+			dispatch(removeLikedTweet(tweet));
+		} else {
+			dispatch(addLikedTweet(tweet));
+		}
+  };
 
   // Delete a tweet in DB
   const handleTrashTweet = () => {
 
   }
 
-  const tweets = [...tweetsData];
-  tweets.sort((a,b)=> a.date === b.date ? 0 : a.date ? -1 : 1);
-  tweets.map((tweet, i) => {
+  const tweets = tweetsData;
+  if (tweets.length > 0) {
+    tweets.sort((a,b)=> a.date === b.date ? 0 : a.date ? -1 : 1);
+    tweets.map((tweet, i) => {
 
-    const timeOut = Math.floor((Date.now() - tweet.date) / 1000);
-    if (timeOut < 60) {
+      const timeOut = Math.floor((Date.now() - tweet.date) / 1000);
+      if (timeOut < 60) {
 
-    } else if (timeOut >=60 && timeOut < 3600) {
+      } else if (timeOut >=60 && timeOut < 3600) {
 
-    } else if (timeOut >= 3600 && timeOut < 86400 ) {
+      } else if (timeOut >= 3600 && timeOut < 86400 ) {
 
-    } else {
+      } else {
 
-    }
+      }
 
-    const isLiked = likedTweetsData.some(likedTweet => likedTweet.content === tweet.content);
-    if (isLiked) {
-			dispatch(removeBookmark(tweet));
-		} else {
-			dispatch(addBookmark(tweet));
-		}
+      let iconStyle = {};
+      if (isLiked) {
+        iconStyle = { 'color': 'red' };
+      }
 
-    let iconStyle = {};
-	  if (isLiked) {
-		  iconStyle = { 'color': 'red' };
-	  }
-
-    return (
-      <div className={styles.tweet}>
-        <div className={styles.tweetHeader}>
-          <Image src="/egg.jpeg" alt="twitterEgg" width={50} height={50} className={styles.avatar}/>
-          <span className={styles.userDetails}>{tweet.firstname} @{tweet.username} .  </span>
+      return (
+        <div className={styles.tweet}>
+          <div className={styles.tweetHeader}>
+            <Image src="/egg.jpeg" alt="twitterEgg" width={50} height={50} className={styles.avatar}/>
+            <span className={styles.userDetails}>{tweet.firstname} @{tweet.username} .  </span>
+          </div>
+          <div className={styles.message}>
+            {tweet.content}
+          </div>
+          <div className={styles.tweetIcons}>
+          <FontAwesomeIcon icon={faHeart} className={styles.like} style={iconStyle} onClick={()=> handleLikeTweet(tweet)}/>
+          <FontAwesomeIcon icon={faTrash} className={styles.delete} onClick={()=> handleTrashTweet()}/>
+          </div>
         </div>
-        <div className={styles.message}>
-          {tweet.message}
-        </div>
-        <div className={styles.tweetIcons}>
-        <FontAwesomeIcon icon={faHeart} className={styles.like} style={iconStyle} onClick={()=> handleLikeTweet()}/>
-        <FontAwesomeIcon icon={faTrash} className={styles.delete} onClick={()=> handleTrashTweet()}/>
-        </div>
-      </div>
-    );
-  });
+      );
+    });
+  }
 }
 
 export default LastTweets;

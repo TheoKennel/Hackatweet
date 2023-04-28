@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../reducers/user';
 import { useRouter } from 'next/router';
-import { addTweet } from '../reducers/likedTweets';
 import styles from '../styles/Home.module.css';
 
 function Home() {
@@ -38,7 +37,7 @@ function Home() {
 
       <div className={styles.tweetsSection}>
         <h2>Home</h2>
-          <Tweet/>
+        <Tweet/>
         <div className={styles.tweetsContainer}>
           <LastTweets/>
         </div>
