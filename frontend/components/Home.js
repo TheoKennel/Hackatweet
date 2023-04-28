@@ -18,21 +18,16 @@ function Home() {
   const likedTweetsData = useSelector((state) => state.likedTweets.value);
 
   // Get all tweets in DB
-  useEffect(() => {
+  const fetchTweets = () => {
     fetch('http://localhost:3000/tweet')
       .then(response => response.json())
       .then(data => {
         setTweetsData(data.tweets.sort((a, b) => new Date(b.date) - new Date(a.date)));
       });
-  }, []);
-  // Like tweet
-  // const handleLikeTweet = () => {
-  //   if (isLiked) {
-	// 		dispatch(removeLikedTweet(tweet));
-	// 	} else {
-	// 		dispatch(addLikedTweet(tweet));
-	// 	}
-  // };
+  }
+  useEffect(() => {
+    fetchTweets();
+  }, [likedTweetsData]);
 
   const tweetPoster = tweetsData.map((tweet, i) => {
     const isLiked = likedTweetsData.some(likedTweet => likedTweet.date === tweet.date);
@@ -40,37 +35,19 @@ function Home() {
     const timeOut = Math.floor((Date.now() - tweetDate) / 1000);
     let timeTweet = ''
     if (timeOut < 60) {
-      timeTweet = `${timeOut} secondes`;
+      timeTweet = 'A few seconds';
     } else if (timeOut >= 60 && timeOut < 3600) {
       const minutes = Math.floor(timeOut / 60);
       timeTweet = `${minutes} minutes`;
     } else if (timeOut >= 3600 && timeOut < 86400) {
       const hours = Math.floor(timeOut / 3600);
-      timeTweet = `${hours} heures`;
+      timeTweet = `${hours} hours`;
     } else {
-      timeTweet = `Plus d'un jour`;
+      const days = Math.floor(timeOut / 86400);
+      timeTweet = `${days} day(s)`;
     }
-    return <LastTweets key={i} isLiked={isLiked} username={tweet.username} firstname={tweet.firstname} content={tweet.content} date={timeTweet} />;
+    return <LastTweets key={i} index={i} id={tweet._id} isLiked={isLiked} username={tweet.username} firstname={tweet.firstname} content={tweet.content} date={timeTweet} />;
   })
-
-  // const tweets = tweetsData;
-  // if (tweets.length > 0) {
-  //   tweets.sort((a,b)=> a.date === b.date ? 0 : a.date ? -1 : 1);
-  //   tweets.map((tweet, i) => {
-  //     const isLiked = likedTweetsData.some(likedTweet => likedTweet.date === tweet.date);
-  //     const timeOut = Math.floor((Date.now() - tweet.date) / 1000);
-  //     if (timeOut < 60) {
-
-  //     } else if (timeOut >=60 && timeOut < 3600) {
-
-  //     } else if (timeOut >= 3600 && timeOut < 86400 ) {
-
-  //     } else {
-
-  //     }
-  //     // <LastTweets key={i} isLiked={isLiked} tweet={...tweet} />;
-  //   });
-  // }
 
   const handleLogout = () => {
     dispatch(logout());
