@@ -1,37 +1,17 @@
-import Link from 'next/link';
 import Image from 'next/image';
 import Tweet from './Tweet';
+import LastTweets from './LastTweets';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../reducers/user';
 import { useRouter } from 'next/router';
-import { addTweet } from '../reducers/tweets';
+import { addTweet } from '../reducers/likedTweets';
 import styles from '../styles/Home.module.css';
-
 
 function Home() {
 
   const router = useRouter();
   const dispatch = useDispatch();
-
-  const user = useSelector((state) => state.user.value);
-  const username = user.username;
-  const firstname = user.firstname;
-
-  const tweetsData = useSelector((state) => state.tweets.value);
-  console.log(tweetsData);
-
-  const [messageContent, setMessageContent] = useState('');
-
-  const createTweet = () => {
-    if (messageContent.length < 280) {
-      dispatch(addTweet({ message: messageContent, date: Date.now }))
-    }
-  }
-
-  const tweets = tweetsData.map((data, i) => {
-    return <Tweet key={i} index={i} {...data} username={username} firstname={firstname} />;
-  });
 
   const handleLogout = () => {
     dispatch(logout());
@@ -58,15 +38,9 @@ function Home() {
 
       <div className={styles.tweetsSection}>
         <h2>Home</h2>
-        <div className={styles.inputDiv} >
-          <input className={styles.inputContent} type="text" placeholder="What's up?" maxLength="280" id="message" onChange={(e)=> setMessageContent(e.target.value)} value={messageContent}/>
-        </div>
-        <div className={styles.addTweet}>
-          <span className={styles.signs}>{messageContent.length}/280</span>
-          <button className={styles.btn} id="tweet" onClick={()=> createTweet()}>Tweet</button>
-        </div>
+          <Tweet/>
         <div className={styles.tweetsContainer}>
-          {tweets}
+          <LastTweets/>
         </div>
       </div>
 

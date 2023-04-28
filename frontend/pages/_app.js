@@ -9,7 +9,7 @@ import SigninPage from './signin';
 // redux imports
 import { Provider } from 'react-redux';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import tweets from '../reducers/tweets';
+import likedTweets from '../reducers/likedTweets';
 import user from '../reducers/user';
 
 //redux-persist imports
@@ -18,7 +18,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import storage from 'redux-persist/lib/storage';
 import Home from '../components/Home';
 
-const reducers = combineReducers({ tweets, user });
+const reducers = combineReducers({ likedTweets, user });
 const persistConfig = { key: 'hackatweet', storage};
 
 const store = configureStore({

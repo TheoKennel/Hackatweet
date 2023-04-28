@@ -1,38 +1,38 @@
-import Image from 'next/image';
+import { useSelector } from 'react-redux';
 import { useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import { removeTweet } from '../reducers/tweets';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faTrash } from '@fortawesome/free-solid-svg-icons';
 import styles from '../styles/Tweet.module.css';
 
 function Tweet(props) {
 
-  const dispatch = useDispatch();
+  const [messageContent, setMessageContent] = useState('');
+  const user = useSelector((state) => state.user.value);
+  const username = user.username;
+  const firstname = user.firstname;
 
-  const timeOut = Date.now - props.date
-
-  const message = props.message;
-
-  const handleTrashTweet = () => {
-    dispatch(removeTask(props));
+  //// Create new tweet in DB
+  const createTweet = () => {
+		fetch('http://localhost:3000/tweet', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ firstname: firstname, username: username, content: messageContent }),
+		}).then(response => response.json())
+			.then(data => {
+				if (data.result) {
+					messageContent('');
+				}
+			});
   }
 
   return (
     <div className={styles.tweet}>
-      <div className={styles.tweetHeader}>
-        <Image src="/egg.jpeg" alt="twitterEgg" width={50} height={50} className={styles.avatar}/>
-        <span className={styles.userDetails}>{props.firstname} @{props.username} . {timeOut} </span>
+      <div className={styles.inputDiv} >
+        <input className={styles.inputContent} type="text" placeholder="What's up?" maxLength="280" id="message" onChange={(e)=> setMessageContent(e.target.value)} value={messageContent}/>
       </div>
-      <div className={styles.message}>
-        {message}
-      </div>
-      <div className={styles.tweetIcons}>
-      <FontAwesomeIcon icon={faHeart} className={styles.like} onClick={()=> handleLikeTweet()}/>
-      <FontAwesomeIcon icon={faTrash} className={styles.delete} onClick={()=> handleTrashTweet()}/>
+      <div className={styles.addTweet}>
+        <span className={styles.signs}>{messageContent.length}/280</span>
+        <button className={styles.btn} id="tweet" onClick={()=> createTweet()}>Tweet</button>
       </div>
     </div>
-
   );
 }
 
