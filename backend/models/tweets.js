@@ -8,6 +8,7 @@ const tweetSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   content: String,
   hashtags: [String],
+  like: { type: Number, default: 0 }
 });
 
 const Tweet = mongoose.model('Tweet', tweetSchema);

@@ -70,7 +70,7 @@ router.get('/hashtag', (req, res) => {
 router.get('/hashtag/:hashtag', (req, res) => {
   const { hashtag } = req.params;
 
-  Tweet.find({ hashtags: hashtag })
+  Tweet.find({ hashtags: `#${hashtag}` })
     .then((tweets) => {
       console.log(tweets);
       res.json({ result: true, tweets });
