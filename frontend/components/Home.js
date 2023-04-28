@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../reducers/user';
 import { useRouter } from 'next/router';
 import styles from '../styles/Home.module.css';
-import Trends from './trends';
+import Trends from './Trends';
 
 function Home() {
 
@@ -22,7 +22,6 @@ function Home() {
     fetch('http://localhost:3000/tweet')
       .then(response => response.json())
       .then(data => {
-        console.log(data.tweets)
         setTweetsData(data.tweets.sort((a, b) => new Date(b.date) - new Date(a.date)));
       });
   }, []);
@@ -104,17 +103,8 @@ function Home() {
         </div>
       </div>
 
-      <div className={styles.trendsSection}>
-        <h2>Trends</h2>
-        <div className={styles.trendsCard}>
-          <div className={styles.hashtag}>
-            #
-          </div>
-          <div className={styles.success}>
-            <span>Number of tweets</span>
+      <div className={styles.trendsSection}>     
             <Trends/>
-          </div>
-        </div>
       </div>
 
       </main>

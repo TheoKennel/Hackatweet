@@ -2,9 +2,8 @@ import '../styles/globals.css';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Login from '../components/Login';
-import LoginPage from './index'
-import SignupPage from './signup';
-import SigninPage from './signin';
+import Home from '../components/Home';
+import Hashtag from '../components/Hashtag';
 
 // redux imports
 import { Provider } from 'react-redux';
@@ -16,7 +15,6 @@ import user from '../reducers/user';
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import storage from 'redux-persist/lib/storage';
-import Home from '../components/Home';
 
 const reducers = combineReducers({ likedTweets, user });
 const persistConfig = { key: 'hackatweet', storage};
@@ -31,13 +29,15 @@ const persistor = persistStore(store);
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
-  const getPageContent = () => {
-    if (router.pathname === '/tweet') {
-      return <Home />;
-    } else {
-      return <Login />;
-    }
-  };
+  // const getPageContent = () => {
+  //   if (router.pathname === '/tweet') {
+  //     return <Home />;
+  //   } else if (router.pathname.startsWith('/hashtag')){
+  //     return <Hashtag/>
+  //   } else {
+  //     return <Login />;
+  //   }
+  // };
 
   return (
     <Provider store={store}>
@@ -45,7 +45,8 @@ function MyApp({ Component, pageProps }) {
         <Head>
           <title>Hackatweet</title>
         </Head>
-        {getPageContent()}
+        {/* {getPageContent()} */}
+        <Component {...pageProps} />
       </PersistGate>
     </Provider>
   );

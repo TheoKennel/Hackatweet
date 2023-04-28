@@ -1,32 +1,43 @@
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import styles from '../styles/Home.module.css';
+import Link from "next/link";
 
-const Trends = (props) => {
-    const [hashtags, setHashtags] = useState([])
 
-    const fetchHashtag = () => {
-        fetch('http://localhost:3000/tweet/hashtag')
+
+const Trends = () => {
+    const [hashtags, setHashtags] = useState([]);
+  
+    useEffect(() => {
+      fetchHashtags();
+    }, []);
+  
+    const fetchHashtags = () => {
+      fetch('http://localhost:3000/tweet/hashtag')
         .then(response => response.json())
         .then(data => {
-          setHashtags(data.tweets.hashtags);
-        })
+          if (data.result) {
+            setHashtags(data.hashtags);
+          }
+        });
     };
-
+  
     return (
-        <div>
-          <h2>Trends</h2>
-          <div>
-              <div key={props._id} className="flex items-center py-1">
-                <span className="mr-2 text-blue-500"># {hashtags._id}</span>
-                <span className="text-gray-500">{hashtags.count} tweet(s)</span>
-              </div>
-          </div>
+      <div>
+        <h2>Trends</h2>
+        <div className={styles.hastagHomeContainer}>
+          {hashtags.map(hashtag => (
+            <div key={hashtag._id} className={styles.hashtagHome}>
+            <Link href={`/hashtag/${hashtag._id.slice(1)}`}>
+              <a className={styles.hastagTagLink}>{hashtag._id}</a>
+            </Link>
+              <p>{hashtag.count} Tweet</p>
+            </div>
+          ))}
         </div>
-      );
-}
-
-
-export default Trends 
+      </div>
+    );
+  };
+  
+  export default Trends;
+  
