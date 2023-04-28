@@ -7,15 +7,15 @@ const { checkBody } = require('../modules/checkBody');
 // Route pour créer un nouveau tweet
 router.post('/', (req, res) => {
   const { content } = req.body;
-  const { username, firstname } = req.body; // Supposons que vous récupérez username et firstname du frontend via req.user
+  const { username, firstname } = req.user; 
 
-  // Vérifier que le champ `content` est présent
+  // Vérifier que le champ 'content' est présent
   if (!checkBody(req.body, ['content'])) {
     res.json({ result: false, error: 'Missing or empty fields' });
     return;
   }
 
-  // Utiliser une expression régulière pour extraire les hashtags du contenu
+  // Utilise une expression régulière pour extraire les hashtags du contenu
   const hashtags = content.match(/#\w+/g) || [];
 
   const newTweet = new Tweet({
@@ -28,7 +28,7 @@ router.post('/', (req, res) => {
   newTweet
     .save()
     .then((data) => {
-      res.status(201).json({ data });
+      res.json({ data });
     })
 });
 
@@ -36,7 +36,7 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) => {
   Tweet.find()
     .then((tweets) => {
-      res.status(200).json({ result: true, tweets });
+      res.json({ result: true, tweets });
     })
 });
 
@@ -65,7 +65,7 @@ router.get('/hashtag', (req, res) => {
 
       // Supprimer les doublons des hashtags
       const uniqueHashtags = [...new Set(hashtags)];
-      res.status(200).json({ result: true, hashtags: uniqueHashtags });
+      res.json({ result: true, hashtags: uniqueHashtags });
     })
 });
 
@@ -76,10 +76,9 @@ router.get('/hashtag/:hashtag', (req, res) => {
 
   Tweet.find({ hashtags: hashtag })
     .then((tweets) => {
-      console.log(tweets.content);
+      console.log(tweets);
       res.json({ result: true, tweets });
     })
 });
 
-module.exports = router;
 module.exports = router;
