@@ -10,9 +10,11 @@ function SignIn(props) {
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
+  // const userFirstname = user.firstName
   const router = useRouter()
   const [signInUsername, setSignInUsername] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
+  const [firstName, setFirstname] = useState("")
   const [error, setError] = useState(""); 
 
   const handleConnection = () => {
@@ -32,7 +34,8 @@ function SignIn(props) {
     .then(response => response.json())
     .then(data => {
         if(data.result) {
-            dispatch(login({ username: signInUsername, token : data.token}))
+            // setFirstname(userFirstname)
+            dispatch(login({ username: signInUsername, token : data.token, firstname : data.firstname}))
             setSignInUsername('');
 			setSignInPassword('');
             setError('')

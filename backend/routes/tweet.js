@@ -7,7 +7,7 @@ const { checkBody } = require('../modules/checkBody');
 // Route pour créer un nouveau tweet
 router.post('/', (req, res) => {
   const { content } = req.body;
-  const { username, firstname } = req.user; 
+  const { username, firstname } = req.body; 
 
   // Vérifier que le champ 'content' est présent
   if (!checkBody(req.body, ['content'])) {
@@ -56,16 +56,12 @@ router.delete('/:tweetId', (req,res) => {
 
 // Récupère tous les hashtags
 router.get('/hashtag', (req, res) => {
-  Tweet.find()
-    .then((tweets) => {
-      const hashtags = tweets.reduce((acc, tweet) => {
-        // Concaténer tous les hashtags extraits de chaque tweet
-        return acc.concat(tweet.hashtags);
-      }, []);
-
-      // Supprimer les doublons des hashtags
-      const uniqueHashtags = [...new Set(hashtags)];
-      res.json({ result: true, hashtags: uniqueHashtags });
+  Tweet.aggregate([
+    { $unwind: "$hashtags" }, // Sépare chaque hashtag en un document distinct
+    { $group: { _id : "$hashtags", count: { $sum: 1 } } }, // Compte le nombre de tweets pour chaque hashtag
+  ])
+    .then((hashtags) => {
+      res.json({ result: true, hashtags });
     })
 });
 

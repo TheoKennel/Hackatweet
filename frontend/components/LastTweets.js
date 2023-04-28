@@ -7,27 +7,24 @@ import styles from '../styles/LastTweets.module.css';
 
 function LastTweets(props) {
 
-  // Delete a tweet in DB
-  const handleTrashTweet = () => {
+  // // Delete a tweet in DB
+  // const handleTrashTweet = () => {
 
-  }
+  // }
 
-  let iconStyle = {};
-  if (isLiked) {
-      iconStyle = { 'color': 'red' };
-  }
+
 
   return (
     <div className={styles.tweet}>
       <div className={styles.tweetHeader}>
         <Image src="/egg.jpeg" alt="twitterEgg" width={50} height={50} className={styles.avatar}/>
-        <span className={styles.userDetails}>{tweet.firstname} @{tweet.username} .  </span>
+        <span className={styles.userDetails}>{props.firstname} @{props.username} . {props.date}  </span>
       </div>
       <div className={styles.message}>
-        {tweet.content}
+        {props.content}
       </div>
       <div className={styles.tweetIcons}>
-        <FontAwesomeIcon icon={faHeart} className={styles.like} style={iconStyle} onClick={()=> handleLikeTweet(tweet)}/>
+        <FontAwesomeIcon icon={faHeart} className={styles.like} onClick={()=> handleLikeTweet()}/>
         <FontAwesomeIcon icon={faTrash} className={styles.delete} onClick={()=> handleTrashTweet()}/>
       </div>
     </div>

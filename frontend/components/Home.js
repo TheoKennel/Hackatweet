@@ -1,11 +1,12 @@
 import Image from 'next/image';
 import Tweet from './Tweet';
 import LastTweets from './LastTweets';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../reducers/user';
 import { useRouter } from 'next/router';
 import styles from '../styles/Home.module.css';
+import Trends from './trends';
 
 function Home() {
 
@@ -21,39 +22,56 @@ function Home() {
     fetch('http://localhost:3000/tweet')
       .then(response => response.json())
       .then(data => {
-        setTweetsData(data);
+        console.log(data.tweets)
+        setTweetsData(data.tweets.sort((a, b) => new Date(b.date) - new Date(a.date)));
       });
   }, []);
-
   // Like tweet
-  const handleLikeTweet = () => {
-    if (isLiked) {
-			dispatch(removeLikedTweet(tweet));
-		} else {
-			dispatch(addLikedTweet(tweet));
-		}
-  };
+  // const handleLikeTweet = () => {
+  //   if (isLiked) {
+	// 		dispatch(removeLikedTweet(tweet));
+	// 	} else {
+	// 		dispatch(addLikedTweet(tweet));
+	// 	}
+  // };
 
+  const tweetPoster = tweetsData.map((tweet, i) => {
+    const isLiked = likedTweetsData.some(likedTweet => likedTweet.date === tweet.date);
+    const tweetDate = new Date(tweet.date)
+    const timeOut = Math.floor((Date.now() - tweetDate) / 1000);
+    let timeTweet = ''
+    if (timeOut < 60) {
+      timeTweet = `${timeOut} secondes`;
+    } else if (timeOut >= 60 && timeOut < 3600) {
+      const minutes = Math.floor(timeOut / 60);
+      timeTweet = `${minutes} minutes`;
+    } else if (timeOut >= 3600 && timeOut < 86400) {
+      const hours = Math.floor(timeOut / 3600);
+      timeTweet = `${hours} heures`;
+    } else {
+      timeTweet = `Plus d'un jour`;
+    }
+    return <LastTweets key={i} isLiked={isLiked} username={tweet.username} firstname={tweet.firstname} content={tweet.content} date={timeTweet} />;
+  })
 
+  // const tweets = tweetsData;
+  // if (tweets.length > 0) {
+  //   tweets.sort((a,b)=> a.date === b.date ? 0 : a.date ? -1 : 1);
+  //   tweets.map((tweet, i) => {
+  //     const isLiked = likedTweetsData.some(likedTweet => likedTweet.date === tweet.date);
+  //     const timeOut = Math.floor((Date.now() - tweet.date) / 1000);
+  //     if (timeOut < 60) {
 
-  const tweets = tweetsData;
-  if (tweets.length > 0) {
-    tweets.sort((a,b)=> a.date === b.date ? 0 : a.date ? -1 : 1);
-    tweets.map((tweet, i) => {
-      const isLiked = likedTweetsData.some(likedTweet => likedTweet.date === tweet.date);
-      const timeOut = Math.floor((Date.now() - tweet.date) / 1000);
-      if (timeOut < 60) {
+  //     } else if (timeOut >=60 && timeOut < 3600) {
 
-      } else if (timeOut >=60 && timeOut < 3600) {
+  //     } else if (timeOut >= 3600 && timeOut < 86400 ) {
 
-      } else if (timeOut >= 3600 && timeOut < 86400 ) {
+  //     } else {
 
-      } else {
-
-      }
-      <LastTweets key={i} isLiked={isLiked} tweet={...tweet} />;
-    });
-  }
+  //     }
+  //     // <LastTweets key={i} isLiked={isLiked} tweet={...tweet} />;
+  //   });
+  // }
 
   const handleLogout = () => {
     dispatch(logout());
@@ -82,7 +100,7 @@ function Home() {
         <h2>Home</h2>
         <Tweet/>
         <div className={styles.tweetsContainer}>
-          <LastTweets/>
+          {tweetPoster}
         </div>
       </div>
 
@@ -94,6 +112,7 @@ function Home() {
           </div>
           <div className={styles.success}>
             <span>Number of tweets</span>
+            <Trends/>
           </div>
         </div>
       </div>
