@@ -15,19 +15,20 @@ function Home() {
 
   const [tweetsData, setTweetsData] = useState([]);
 
+  const user = useSelector((state) => state.user.value);
+  const firstname = user.firstname;
+  const username = `@${user.username}`;
+
   const likedTweetsData = useSelector((state) => state.likedTweets.value);
 
   // Get all tweets in DB
-  const fetchTweets = () => {
-    fetch('http://localhost:3000/tweet')
-      .then(response => response.json())
-      .then(data => {
-        setTweetsData(data.tweets.sort((a, b) => new Date(b.date) - new Date(a.date)));
-      });
-  }
   useEffect(() => {
-    fetchTweets();
-  }, [likedTweetsData]);
+    fetch('http://localhost:3000/tweet')
+    .then(response => response.json())
+    .then(data => {
+      setTweetsData(data.tweets.sort((a, b) => new Date(b.date) - new Date(a.date)));
+    });
+  }, []);
 
   const tweetPoster = tweetsData.map((tweet, i) => {
     const isLiked = likedTweetsData.some(likedTweet => likedTweet.date === tweet.date);
@@ -35,7 +36,7 @@ function Home() {
     const timeOut = Math.floor((Date.now() - tweetDate) / 1000);
     let timeTweet = ''
     if (timeOut < 60) {
-      timeTweet = 'A few seconds';
+      timeTweet = 'a few seconds';
     } else if (timeOut >= 60 && timeOut < 3600) {
       const minutes = Math.floor(timeOut / 60);
       timeTweet = `${minutes} minutes`;
@@ -44,10 +45,14 @@ function Home() {
       timeTweet = `${hours} hours`;
     } else {
       const days = Math.floor(timeOut / 86400);
-      timeTweet = `${days} day(s)`;
+      days >= 1 && days < 2 ? timeTweet = `${days} day` : timeTweet = `${days} days`;
     }
     return <LastTweets key={i} index={i} id={tweet._id} isLiked={isLiked} username={tweet.username} firstname={tweet.firstname} content={tweet.content} date={timeTweet} />;
   })
+
+  const handleLogoClick = () => {
+    router.push('/tweet');
+  };
 
   const handleLogout = () => {
     dispatch(logout());
@@ -60,27 +65,29 @@ function Home() {
 
       <div className={styles.leftSection}>
           <div className={styles.logo}>
-            <Image src="/logo.png" alt="Logo" width={60} height={60} className={styles.logoImg}/>
+            <Image src="/logo.png" alt="Logo" width={60} height={60} className={styles.logoImg} onClick={handleLogoClick}/>
           </div>
           <div className={styles.userSection}>
             <div className={styles.userInfo}>
-              User infos
+              <Image src="/egg.jpeg" alt="twitterEgg" width={50} height={50} className={styles.avatar}/>
+              {firstname}
+              {username}
             </div>
             <div className={styles.logout}>
-              <button onClick={handleLogout}>Logout</button>
+              <button className={styles.btn} onClick={handleLogout}>Logout</button>
             </div>
         </div>
       </div>
 
       <div className={styles.tweetsSection}>
         <h2>Home</h2>
-        <Tweet/>
+        <Tweet />
         <div className={styles.tweetsContainer}>
           {tweetPoster}
         </div>
       </div>
 
-      <div className={styles.trendsSection}>     
+      <div className={styles.trendsSection}>
             <Trends/>
       </div>
 

@@ -7,12 +7,18 @@ import styles from '../styles/LastTweets.module.css';
 
 function LastTweets(props) {
 
-  const likedTweetsData = useSelector((state) => state.likedTweets.value);
-  console.log(likedTweetsData);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.value);
+
+  let content = <span>{props.content}</span>;
+  const hashtagPattern = /[\A#\w+]/;
+  if (hashtagPattern.test(content)) {
+    const hashtags = 
+    content = <span style={{color: '#2F9BF0'}}>{props.content}</span>;
+  }
 
   const handleLikeTweet = () => {
-    if (props.isLiked) {
+    if (props.isLiked && user.token) {
 			dispatch(removeLikedTweet(props));
 		} else {
 			dispatch(addLikedTweet(props));
@@ -36,7 +42,7 @@ function LastTweets(props) {
         <span className={styles.userDetails}>{props.firstname}</span> @{props.username} . {props.date}
       </div>
       <div className={styles.message}>
-        {props.content}
+        {content}
       </div>
       <div className={styles.tweetIcons}>
         <FontAwesomeIcon icon={faHeart} className={styles.like} style={heartStyle} onClick={()=> handleLikeTweet()}/>
