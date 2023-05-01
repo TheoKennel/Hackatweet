@@ -10,15 +10,22 @@ function LastTweets(props) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
 
-  let content = <span>{props.content}</span>;
-  const hashtagPattern = /[\A#\w+]/;
-  if (hashtagPattern.test(content)) {
-    const hashtags = 
-    content = <span style={{color: '#2F9BF0'}}>{props.content}</span>;
-  }
+  //const hashtagPattern = /[\A#\w+]/;
+  //const hashtags = content.split(hashtagPattern);
+  const wordsOfContent = props.content.split(' ');
+  const newContent = [];
+  for (let word of wordsOfContent) {
+    if (word[0] === '#') {
+      word = <span style={{color: '#2F9BF0'}}>word</span>;
+    }
+    newContent.push(word);
+    }
 
+  const content = newContent.join(' ');
+
+  // Like tweet and unlike tweet
   const handleLikeTweet = () => {
-    if (props.isLiked && user.token) {
+    if (props.isLiked) {
 			dispatch(removeLikedTweet(props));
 		} else {
 			dispatch(addLikedTweet(props));
@@ -29,10 +36,12 @@ function LastTweets(props) {
     heartStyle = { 'color': 'red'};
   }
 
-  //Delete a tweet in DB
+  //Delete a tweet in DB if only the tweet is a user's one
   const handleTrashTweet = () => {
-    fetch(`http://localhost:3000/tweet/${props.id}`, { method: 'DELETE' })
-    .then(response => response.json());
+    if (props.username === user.username) {
+      fetch(`http://localhost:3000/tweet/${props.id}`, { method: 'DELETE' })
+      .then(response => response.json());
+    }
   }
 
   return (

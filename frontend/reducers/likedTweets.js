@@ -10,9 +10,11 @@ export const likedTweetsSlice = createSlice({
 	reducers: {
 		addLikedTweet: (state, action) => {
 			state.value.push(action.payload);
+      state.value.like = 1;
 		},
 		removeLikedTweet: (state, action) => {
 			state.value = state.value.filter(tweet => tweet.date !== action.payload.date);
+      state.value.like = 0;
 		},
 	},
 });
