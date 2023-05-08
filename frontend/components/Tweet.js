@@ -1,15 +1,18 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from "react";
+import { addTweet } from '../reducers/tweets';
 import styles from '../styles/Tweet.module.css';
 
 function Tweet(props) {
+
+  const dispatch = useDispatch();
 
   const [messageContent, setMessageContent] = useState('');
   const user = useSelector((state) => state.user.value);
   const username = user.username;
   const firstname = user.firstname;
 
-  //// Create new tweet in DB
+  //// Create a new tweet in DB
   const createTweet = () => {
 		fetch('http://localhost:3000/tweet', {
 			method: 'POST',
@@ -17,10 +20,10 @@ function Tweet(props) {
 			body: JSON.stringify({ firstname: firstname, username: username, content: messageContent }),
 		}).then(response => response.json())
 			.then(data => {
-				if (data.result) {
-					messageContent('');
-				}
-			});
+        data.result && dispatch(addTweet(data.tweet));
+        props.handleUpdateTweets();
+				setMessageContent('');
+			})
   }
 
   return (

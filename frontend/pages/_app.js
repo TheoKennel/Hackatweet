@@ -8,6 +8,7 @@ import Hashtag from '../components/Hashtag';
 // redux imports
 import { Provider } from 'react-redux';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import tweets from '../reducers/tweets';
 import likedTweets from '../reducers/likedTweets';
 import user from '../reducers/user';
 
@@ -16,7 +17,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import storage from 'redux-persist/lib/storage';
 
-const reducers = combineReducers({ likedTweets, user });
+const reducers = combineReducers({ tweets, likedTweets, user });
 const persistConfig = { key: 'hackatweet', storage};
 
 const store = configureStore({

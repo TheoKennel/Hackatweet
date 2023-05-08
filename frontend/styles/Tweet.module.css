@@ -7,10 +7,11 @@
   justify-content: flex-end;
   align-items: center;
   border-bottom: 1px solid grey;
+  padding: 20px;
 }
 .inputContent {
   width: 80%;
-  height: 80px;
+  height: 30px;
   background-color: #17202D;
   color: lightgray;
   border: none;
@@ -25,6 +26,6 @@
   height: 25px;
   border-radius: 50px;
   font-weight: bold;
-  margin: 5px;
+  margin: 10px;
   border: none !important;
 }
